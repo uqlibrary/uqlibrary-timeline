@@ -1,0 +1,52 @@
+:host {
+  display: block;
+  position: relative;
+}
+
+#date {
+  padding: 2px 17px;
+}
+
+.first {
+  border-bottom: 1px solid #cccccc;
+  margin-bottom: 17px;
+}
+
+#date {
+  width: 27px;
+}
+
+#day {
+  font-size: 2em;
+  font-weight: 400;
+  line-height: 1.2em;
+  color: #FF1A40;
+}
+
+.first #day {
+  color: #272727;
+}
+
+#day-text {
+  color: #999999;
+  line-height: 1em;
+}
+
+#item-inner {
+  white-space: nowrap;
+  background-color: #00BCAF;
+  color: #ffffff;
+  border-radius: 2px;
+  padding: 12px;
+  line-height: 1.4em;
+  margin-bottom: 17px;
+}
+
+#item {
+  margin-right: 17px;
+}
+
+.last #item {
+  border-bottom: 1px solid #FF1A40;
+  margin-bottom: 17px;
+}
