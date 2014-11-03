@@ -1,7 +1,7 @@
 uqlibrary-timeline
 ==================
 
-See the [component page](https://github.com/uqlibrary/uqlibrary-timeline) for more information.
+See the [component page](https://uqlibrary.github.io/uqlibrary-timeline) for more information.
 
 ## Testing Your Element
 
