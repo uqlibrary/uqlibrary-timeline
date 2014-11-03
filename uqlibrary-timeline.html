@@ -1,5 +1,4 @@
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="uqlibrary-timeline-item.html">
 
 <!--
 Element providing a simple timeline.
@@ -48,19 +47,38 @@ Element providing a simple timeline.
   <template>
     <link rel="stylesheet" href="uqlibrary-timeline.css">
 
-    <template repeat="{{event, idx in processedEvents}}">
+    <div id="timeline">
+      <template repeat="{{event, idx in processedEvents}}">
 
-      <uqlibrary-timeline-item class="timeline-item {{event.class}}" event="{{event}}">
-        <div class="timeline-item-title">{{event.title}}</div>
-        <div>{{event.subtitle}}</div>
-        <div>{{event.text}}</div>
-      </uqlibrary-timeline-item>
+        <template if="{{!event.isDivider}}">
+          <div class="timeline-item {{event.class}}">
+            <div horizontal layout class="timeline-item-inner">
+              <div class="date" vertical layout>
+                <div class="day">
+                  {{event.day}}
+                </div>
+                <div class="day-text">
+                  {{event.dayText}}
+                </div>
+              </div>
+              <div flex class="item">
+                <div class="item-inner">
+                  <div class="title">{{event.title}}</div>
+                  <div>{{event.subtitle}}</div>
+                  <div>{{event.text}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
 
-      <template if="{{idx === 0}}">
-        <p class="timeline-group-text">This week ({{timePeriod}})</p>
+        <template if="{{event.isDivider}}">
+          <p class="timeline-divider">&nbsp;</p>
+        </template>
+
       </template>
+    </div>
 
-    </template>
   </template>
 
   <script>
@@ -116,6 +134,7 @@ Element providing a simple timeline.
           var oneWeek = new Date();
           oneWeek.setHours(144, 0, 0, 0);
 
+          var haveDivider = false;
           for (var i = 0; i < events.length; i++) {
             events[i].date = new Date(events[i].date);
             events[i].time = events[i].date.getTime();
@@ -127,8 +146,12 @@ Element providing a simple timeline.
               events[i].day = '';
               events[i].dayText = '';
             }
-            if (i > 0 && events[i].date.getDay() !== events[(i-1)].date.getDay()) {
+            if (i > 0 && events[i].date.getDay() !== events[(i-1)].date.getDay() && !haveDivider) {
               events[(i-1)].class = 'last';
+              haveDivider = true;
+              processed.push({
+                isDivider: true
+              });
             }
             if (events[i].time - oneWeek.getTime() <= 0) {
               processed.push(events[i]);
