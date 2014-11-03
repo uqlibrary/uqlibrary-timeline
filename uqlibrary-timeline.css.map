@@ -1,6 +1,6 @@
 {
 "version": 3,
-"mappings": "AAGA,oBAAqB;EACnB,KAAK,EAAE,OAAO;EACd,WAAW,EAAE,IAAI;;AAGnB,oBAAqB;EACnB,WAAW,EAAE,GAAG",
+"mappings": "AAGA,oBAAqB;EACnB,KAAK,EAAE,OAAO;EACd,WAAW,EAAE,IAAI;;AAGnB,oBAAqB;EACnB,WAAW,EAAE,GAAG;;AAGlB,oBAAqB;EACnB,WAAW,EAAE,MAAM;EACnB,aAAa,EAAE,QAAQ;EACvB,QAAQ,EAAE,MAAM",
 "sources": ["uqlibrary-timeline.scss"],
 "names": [],
 "file": "uqlibrary-timeline.css"

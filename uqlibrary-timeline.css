@@ -5,4 +5,9 @@
 .timeline-item-title {
   font-weight: 500; }
 
+.timeline-item > div {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden; }
+
 /*# sourceMappingURL=uqlibrary-timeline.css.map */

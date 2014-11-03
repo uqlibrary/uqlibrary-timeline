@@ -17,32 +17,38 @@
   <script>
     window.addEventListener('polymer-ready', function() {
       var myEl = document.querySelector('uqlibrary-timeline');
-      myEl.events = [
-        {
-          date: new Date().setHours(0, 0, 0, 0),
-          title: "Item title",
-          subtitle: "Second line",
-          text: "Third line"
-        },
-        {
-          date: new Date().setHours(24, 0, 0, 0),
-          title: "Item title",
-          subtitle: "Second line",
-          text: "Third line"
-        },
-        {
-          date: new Date().setHours(72, 0, 0, 0),
-          title: "Item title",
-          subtitle: "Second line",
-          text: "Third line"
-        }
-      ];
 
-      suite('<uqlibrary-timeline>', function() {
-        test('has an event with an item title', function() {
-          expect(myEl.events).to.have.deep.property('[0].title', 'Item title');
+      describe('uqlibrary-timeline', function () {
+        before(function () {
+          myEl.events = [
+            {
+              date: new Date().setHours(0, 0, 0, 0),
+              title: "Item title",
+              subtitle: "Second line",
+              text: "Third line"
+            },
+            {
+              date: new Date().setHours(24, 0, 0, 0),
+              title: "Item title",
+              subtitle: "Second line",
+              text: "Third line"
+            },
+            {
+              date: new Date().setHours(72, 0, 0, 0),
+              title: "Item title",
+              subtitle: "Second line",
+              text: "Third line"
+            }
+          ];
+        });
+
+        describe('events', function () {
+          it('should have an event with an item title', function() {
+            expect(myEl.events).to.have.deep.property('[0].title', 'Item title');
+          });
         });
       });
+
     });
   </script>
 

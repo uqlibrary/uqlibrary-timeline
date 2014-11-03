@@ -12,7 +12,7 @@ Element providing a simple timeline item.
 @status alpha
 @homepage https://github.com/uqlibrary/uqlibrary-timeline-item
 -->
-<polymer-element name="uqlibrary-timeline-item" attributes="date class">
+<polymer-element name="uqlibrary-timeline-item" attributes="event class" noscript>
 
   <template if="{{!hidden}}">
     <link rel="stylesheet" href="uqlibrary-timeline-item.css">
@@ -21,10 +21,10 @@ Element providing a simple timeline item.
       <div horizontal layout>
           <div id="date" vertical layout>
             <div id="day">
-              {{day}}
+              {{event.day}}
             </div>
             <div id="day-text">
-              {{dayText}}
+              {{event.dayText}}
             </div>
           </div>
           <div flex id="item">
@@ -35,31 +35,5 @@ Element providing a simple timeline item.
       </div>
     </div>
   </template>
-
-  <script>
-    (function() {
-      Polymer('uqlibrary-timeline-item', {
-
-        day: '',
-        dayText: '',
-        dayNames: [
-          'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'
-        ],
-        hidden: false,
-
-        ready: function () {
-          this.date = new Date(this.date);
-
-          var now  = new Date();
-          now.setHours(48, 0, 0, 0);
-          if (this.date.getTime() - now.getTime() <= 0) {
-            this.day = this.date.getDate();
-            this.dayText = this.dayNames[this.date.getDay()];
-          }
-        }
-
-      });
-    })();
-  </script>
 
 </polymer-element>
