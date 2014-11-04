@@ -136,6 +136,7 @@ Element providing a simple timeline.
 
           var haveDivider = false;
           for (var i = 0; i < events.length; i++) {
+            events[i].class = '';
             events[i].date = new Date(events[i].date);
             events[i].time = events[i].date.getTime();
             events[i].day = events[i].date.getDate();
