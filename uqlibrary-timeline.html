@@ -178,7 +178,9 @@ Element providing a simple timeline.
             processed.push(events[i]);
           }
 
-          processed[0].class = 'first';
+          if (processed.length > 0) {
+            processed[0].class = 'first';
+          }
           this.processedEvents = processed;
         }
       });
