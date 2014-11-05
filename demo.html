@@ -67,6 +67,26 @@
         ];
       });
 
+      setTimeout(function () {
+        var timeline = document.querySelector('uqlibrary-timeline');
+        timeline.events.push({
+          date: new Date().setHours(2, 0, 0, 0),
+          title: "Item title 2",
+          subtitle: "Second line",
+          text: "Third line"
+        });
+      }, 1000);
+
+      setTimeout(function () {
+        var timeline = document.querySelector('uqlibrary-timeline');
+        timeline.events.push({
+          date: new Date().setHours(3, 0, 0, 0),
+          title: "Item title 3",
+          subtitle: "Second line",
+          text: "Third line"
+        });
+      }, 2000);
+
     }());
   </script>
 

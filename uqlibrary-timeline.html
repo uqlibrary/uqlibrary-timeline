@@ -1,4 +1,5 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../core-collapse/core-collapse.html">
 
 <!--
 Element providing a simple timeline.
@@ -51,25 +52,29 @@ Element providing a simple timeline.
       <template repeat="{{event, idx in processedEvents}}">
 
         <template if="{{!event.isDivider}}">
-          <div class="timeline-item {{event.class}}">
-            <div horizontal layout class="timeline-item-inner">
-              <div class="date" vertical layout>
-                <div class="day">
-                  {{event.day}}
+
+          <core-collapse opened="{{event.opened}}">
+            <div id="{{event.id}}" class="{{event.class}}">
+              <div horizontal layout class="timeline-item-inner">
+                <div class="date" vertical layout>
+                  <div class="day">
+                    {{event.day}}
+                  </div>
+                  <div class="day-text">
+                    {{event.dayText}}
+                  </div>
                 </div>
-                <div class="day-text">
-                  {{event.dayText}}
-                </div>
-              </div>
-              <div flex class="item">
-                <div class="item-inner">
-                  <div class="title">{{event.title}}</div>
-                  <div>{{event.subtitle}}</div>
-                  <div>{{event.text}}</div>
+                <div flex class="item">
+                  <div class="item-inner">
+                    <div class="title">{{event.title}}</div>
+                    <div>{{event.subtitle}}</div>
+                    <div>{{event.text}}</div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </core-collapse>
+
         </template>
 
         <template if="{{event.isDivider}}">
@@ -99,20 +104,35 @@ Element providing a simple timeline.
         created: function () {
           this.events = [];
           this.processedEvents = [];
-          this.months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
           this.dayNames = [
             'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'
           ];
         },
 
-        ready: function () {
+        processedEventsChanged: function () {
+          this.async(function () {
+            Array.prototype.slice.call(this.$.timeline.querySelectorAll('core-collapse')).forEach(function(element) {
+              if (element.opened === false) {
+                element.opened = true;
+              }
+            });
+          }, null, 100);
+          this.async(function () {
+            Array.prototype.slice.call(this.$.timeline.querySelectorAll('.event-item-hidden')).forEach(function(element) {
+              element.className = 'event-item';
+            });
+          }, null, 100);
         },
 
-        eventsChanged: function () {
-          var that = this;
-
-          var events = this.events;
+        eventsChanged: function (val) {
+          var events = JSON.parse(JSON.stringify(this.events));
           var processed = [];
+
+          for (var i = 0; i < events.length; i++) {
+            if (val.length) {
+              events[val[0].index].opened = false;
+            }
+          }
 
           // Sort by date (ascending)
           events.sort(function (a, b) {
@@ -127,26 +147,27 @@ Element providing a simple timeline.
             return 0;
           });
 
-          // Get the events for the next week
-          var now = new Date();
-          var tomorrow = new Date();
-          tomorrow.setHours(24, 0, 0, 0);
-          var oneWeek = new Date();
-          oneWeek.setHours(144, 0, 0, 0);
-
           var haveDivider = false;
+
           for (var i = 0; i < events.length; i++) {
-            events[i].class = '';
+            events[i].id = 'event-' + i;
             events[i].date = new Date(events[i].date);
             events[i].time = events[i].date.getTime();
             events[i].day = events[i].date.getDate();
             events[i].dayText = this.dayNames[events[i].date.getDay()];
+            events[i].class = 'event-item';
+
+            if (! events[i].hasOwnProperty('opened')) {
+              events[i].opened = true;
+            } else {
+              events[i].class = 'event-item event-item-hidden';
+            }
 
             if (i > 0 && events[i].date.getDay() === events[(i-1)].date.getDay()) {
-              events[(i-1)].class = '';
               events[i].day = '';
               events[i].dayText = '';
             }
+
             if (i > 0 && events[i].date.getDay() !== events[(i-1)].date.getDay() && !haveDivider) {
               events[(i-1)].class = 'last';
               haveDivider = true;
@@ -154,25 +175,12 @@ Element providing a simple timeline.
                 isDivider: true
               });
             }
-            if (events[i].time - oneWeek.getTime() <= 0) {
-              processed.push(events[i]);
-            }
+            processed.push(events[i]);
           }
 
           processed[0].class = 'first';
-
-          var startMonth = that.months[tomorrow.getMonth()];
-          that.timePeriod = now.getDate() + ' ' + startMonth;
-          that.timePeriod += ' - ' + oneWeek.getDate();
-          var endMonth = that.months[oneWeek.getMonth()];
-
-          if (startMonth !== endMonth) {
-            that.timePeriod += ' ' + endMonth;
-          }
-
-          that.processedEvents = processed;
+          this.processedEvents = processed;
         }
-
       });
     })();
   </script>

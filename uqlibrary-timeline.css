@@ -72,4 +72,10 @@
 .last .item-inner {
   margin-bottom: 0; }
 
+.event-item {
+  transition: opacity 2000ms; }
+
+.event-item-hidden {
+  opacity: 0; }
+
 /*# sourceMappingURL=uqlibrary-timeline.css.map */
