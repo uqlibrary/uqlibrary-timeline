@@ -1,3 +1,29 @@
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 200;
+  src: url("Roboto-Light.woff") format("woff"); }
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: url("Roboto-Regular.woff") format("woff"); }
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  src: url("Roboto-Medium.woff") format("woff"); }
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  src: url("Roboto-Bold.woff") format("woff"); }
+:host,
+:host *,
+::content * {
+  box-sizing: border-box;
+  outline: none; }
+
 #timeline {
   margin: 16px; }
 
@@ -8,21 +34,17 @@
 
 .timeline-divider {
   line-height: 0.625em;
-  border-bottom: 1px solid #FF1A40;
+  border-bottom: 1px solid #49075E;
   margin: 0 0 9px 52px; }
 
 .timeline-divider:before {
   content: '\2022';
   font-size: 3.1em;
-  color: #FF1A40;
+  color: #49075E;
   margin: 0 0 0 -12px;
   vertical-align: middle;
   display: inline-block;
   height: 0px; }
-
-.timeline-group-text {
-  color: #999999;
-  margin-left: 75px; }
 
 .date {
   width: 60px;
@@ -32,19 +54,19 @@
   margin-top: 2px;
   font-size: 2.125em;
   line-height: 1.1em;
-  color: #FF1A40; }
+  color: #49075E; }
 
 .day-text {
   font-size: 0.875em;
   line-height: 1.1em;
-  color: #999999; }
+  color: rgba(0, 0, 0, 0.54); }
 
 .first .day {
-  color: #272727; }
+  color: #49075E; }
 
 .item {
-  background-color: #00BCAF;
-  color: #ffffff;
+  background-color: #00bfa5;
+  color: rgba(255, 255, 255, 0.87);
   border-radius: 2px;
   padding: 16px;
   margin-bottom: 8px; }

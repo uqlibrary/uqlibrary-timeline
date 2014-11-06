@@ -1,3 +1,5 @@
+@import "../uqlibrary-elements/resources/theme/element";
+
 :host {
 }
 
@@ -13,23 +15,18 @@
 
 .timeline-divider {
   line-height: 0.625em;
-  border-bottom: 1px solid #FF1A40;
+  border-bottom: 1px solid $primary-500;
   margin: 0 0 9px 52px;
 }
 
 .timeline-divider:before {
   content: '\2022';
   font-size: 3.1em;
-  color: #FF1A40;
+  color: $primary-500;
   margin: 0 0 0 -12px;
   vertical-align: middle;
   display: inline-block;
   height: 0px;
-}
-
-.timeline-group-text {
-  color: #999999;
-  margin-left: 75px;
 }
 
 .date {
@@ -41,22 +38,22 @@
   margin-top: 2px;
   font-size: 2.125em;
   line-height: 1.1em;
-  color: #FF1A40;
+  color: $primary-700;
 }
 
 .day-text {
   font-size: 0.875em;
   line-height: 1.1em;
-  color: #999999;
+  color: $secondary-text;
 }
 
 .first .day {
-  color: #272727;
+  color: $primary-500;
 }
 
 .item {
-  background-color: #00BCAF;
-  color: #ffffff;
+  background-color: $accent-A400;
+  color: $text-inverse;
   border-radius: 2px;
   padding: 16px;
   margin-bottom: 8px;
