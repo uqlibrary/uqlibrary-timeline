@@ -10,10 +10,10 @@
     "/tests/"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#^0.5.0",
-    "core-collapse": "Polymer/core-collapse#0.5.0"
+    "polymer": "Polymer/polymer#^0.5.1",
+    "core-collapse": "Polymer/core-collapse#0.5.1"
   },
   "devDependencies": {
-    "web-component-tester": "Polymer/web-component-tester#^0.7.3"
+    "web-component-tester": "Polymer/web-component-tester#1.6.1"
   }
 }
