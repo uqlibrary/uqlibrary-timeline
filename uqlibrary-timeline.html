@@ -33,12 +33,15 @@ Element providing a simple timeline.
 @status alpha
 @homepage https://github.com/uqlibrary/uqlibrary-timeline
 -->
-<polymer-element name="uqlibrary-timeline" attributes="events">
+<polymer-element name="uqlibrary-timeline" attributes="events noEventsMessage">
 
   <template>
     <link rel="stylesheet" href="uqlibrary-timeline.css">
 
     <div id="timeline">
+
+      <div class="empty-events" hidden?="{{processedEvents.length > 0}}"> {{ noEventsMessage }} </div>
+
       <template repeat="{{event, idx in processedEvents}}">
 
         <template if="{{!event.isDivider}}">
@@ -85,6 +88,15 @@ Element providing a simple timeline.
          * @property events
          * @type array
          */
+
+        /**
+         * The `noEventsMessage` a message to display when there are no upcoming events
+         *
+         * @property noEventsMessage
+         * @type String
+         */
+
+        noEventsMessage : 'You do not have any bookings scheduled',
 
         created: function () {
           this.events = [];
@@ -168,12 +180,18 @@ Element providing a simple timeline.
               events[i].class = 'event-item event-item-hidden';
             }
 
-            if (i > 0 && events[i].startDate.getDay() === events[(i-1)].startDate.getDay()) {
+            //same day events should not display date
+            if (i > 0
+                    && events[i].startDate.getDay() === events[(i-1)].startDate.getDay()
+                    && events[i].startDate.getDate() === events[(i-1)].startDate.getDate()) {
               events[i].day = '';
               events[i].dayText = '';
             }
 
-            if (i > 0 && events[i].startDate.getDay() !== events[(i-1)].startDate.getDay() && !haveDivider) {
+            //insert divider between past and upcoming
+            if (i > 0 && !haveDivider
+                    && (new Date()).getTime() < events[i].startDate.getTime()
+                    && (new Date()).getTime() >= events[i-1].startDate.getTime()) {
               events[(i-1)].class = 'last';
               haveDivider = true;
               processed.push({

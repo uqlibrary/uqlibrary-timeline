@@ -3,6 +3,12 @@
 :host {
 }
 
+.empty-events {
+  line-height: 48px;
+  color: $secondary-text;
+  text-align: center;
+}
+
 #timeline {
   margin: 16px;
 }

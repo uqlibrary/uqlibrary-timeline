@@ -33,7 +33,7 @@
           alert("Event: " + event.detail.title);
         });
 
-        timeline.events = [
+        var events = [
           {
             id:       1,
             startDate:new Date(new Date().setHours(0, 0, 0, 0)),
@@ -43,8 +43,8 @@
           },
           {
             id:       2,
-            startDate:new Date(new Date().setHours(4, 0, 0, 0)),
-            endDate:  new Date(new Date().setHours(4, 30, 0, 0)),
+            startDate:new Date(new Date().setHours(15, 0, 0, 0)),
+            endDate:  new Date(new Date().setHours(15, 30, 0, 0)),
             title:    "Item title 2",
             subtitle: "Second line"
           },
@@ -56,20 +56,6 @@
             subtitle: "Second line"
           },
           {
-            id:       4,
-            startDate:new Date(new Date().setHours(27, 0, 0, 0)),
-            endDate:  new Date(new Date().setHours(28, 30, 0, 0)),
-            title:    "Item title 4",
-            subtitle: "Second line"
-          },
-          {
-            id:       5,
-            startDate:new Date(new Date().setHours(29, 0, 0, 0)),
-            endDate:  new Date(new Date().setHours(30, 0, 0, 0)),
-            title:    "Item title 5",
-            subtitle: "Second line"
-          },
-          {
             id:       6,
             startDate:new Date(new Date().setHours(72, 0, 0, 0)),
             endDate:  new Date(new Date().setHours(73, 30, 0, 0)),
@@ -77,6 +63,9 @@
             subtitle: "Second line"
           }
         ];
+
+        timeline.events = events;
+
       });
 
       setTimeout(function () {
@@ -100,6 +89,17 @@
           subtitle: "Second line"
         });
       }, 3000);
+
+      setTimeout(function () {
+        var timeline = document.querySelector('uqlibrary-timeline');
+        timeline.events.push({
+          id:       9,
+          startDate:new Date(new Date().setHours(192+49, 0, 0, 0)),
+          endDate:  new Date(new Date().setHours(192+50, 30, 0, 0)),
+          title:    "Newer Item title",
+          subtitle: "Second line"
+        });
+      }, 4000);
 
     }());
   </script>
