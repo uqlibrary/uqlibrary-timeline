@@ -36,7 +36,21 @@ Element providing a simple timeline.
 <polymer-element name="uqlibrary-timeline" attributes="events noEventsMessage">
 
   <template>
-    <link rel="stylesheet" href="uqlibrary-timeline.css">
+    <style>
+      :host,
+      :host *,
+      ::content * {
+        box-sizing: border-box;
+        outline: none; }
+
+      .event-item {
+        transition: opacity 2000ms; }
+
+      .event-item-hidden {
+        opacity: 0; }
+    </style>
+
+    <link rel="stylesheet" href="../uqlibrary-elements/resources/theme/element.css">
 
     <div class="text-container text-center caption" hidden?="{{processedEvents.length > 0}}"> {{ noEventsMessage }} </div>
 
@@ -47,8 +61,9 @@ Element providing a simple timeline.
           <core-collapse opened="{{event.opened}}">
             <li class="list-item timeline" id="event-{{event.id}}">
               <div class="date">
-                <div class="title">{{event.day}}</div>
                 <div class="caption">{{event.dayText}}</div>
+                <div class="title">{{event.day}}</div>
+                <div class="caption">{{event.monthText}}</div>
               </div>
               <div class="content" on-tap="{{eventSelected}}" data-event-id="{{event.id}}">
                 <div class="line1">{{event.title}}</div>
@@ -156,6 +171,7 @@ Element providing a simple timeline.
 
             events[i].day = events[i].startDate.getDate();
             events[i].dayText = moment(events[i].startDate).format('ddd');
+            events[i].monthText = moment(events[i].startDate).format('MMM');
 
             var startFormat = moment(events[i].startDate).format('a') == moment(events[i].endDate).format('a') ? 'h:mm' : 'h:mm a';
             events[i].timeText = moment(events[i].startDate).format(startFormat) + " - " + moment(events[i].endDate).format('h:mm a');
@@ -174,6 +190,7 @@ Element providing a simple timeline.
                     && events[i].startDate.getDate() === events[(i-1)].startDate.getDate()) {
               events[i].day = '';
               events[i].dayText = '';
+              events[i].monthText = '';
             }
 
             //insert divider between past and upcoming
