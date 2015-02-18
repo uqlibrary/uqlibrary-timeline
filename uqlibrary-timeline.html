@@ -77,7 +77,7 @@ Element providing a simple timeline.
               </div>
               <div class="content" on-click="{{eventSelected}}" data-event-id="{{event.id}}" role="link">
                 <div class="line1">
-                  <a href="javascript:;">{{event.title}}</a>
+                  <a href="{{javascriptPlaceholder}}">{{event.title}}</a>
                 </div>
                 <div class="line2">{{event.subtitle}}</div>
                 <div class="line3">{{event.timeText}}</div>
@@ -113,6 +113,7 @@ Element providing a simple timeline.
          */
 
         noEventsMessage : 'You do not have any bookings scheduled',
+        javascriptPlaceholder: 'javascript:;', //disable javascript
 
         created: function () {
           this.events = [];
