@@ -1,0 +1,135 @@
+<link rel="import" href="elements.html">
+
+<!--
+Element providing a simple timeline.
+
+##### Example
+
+    <uqlibrary-timeline></uqlibrary-timeline>
+
+    <script>
+      (function () {
+
+        window.addEventListener('polymer-ready', function() {
+          var timeline = document.querySelector('uqlibrary-timeline');
+          timeline.events = [
+            {
+              id:       1,
+              startDate:new Date(new Date().setHours(0, 0, 0, 0)),
+              endDate:  new Date(new Date().setHours(0, 30, 0, 0)),
+              title:    "Item title 1",
+              subtitle: "Second line"
+            }
+          ];
+        });
+
+      }());
+    </script>
+
+@element uqlibrary-timeline
+@blurb Element providing a simple timeline.
+@status alpha
+@homepage https://github.com/uqlibrary/uqlibrary-timeline
+-->
+<dom-module id="uqlibrary-timeline">
+  <template>
+    <style is="custom-style" include="iron-flex iron-flex-alignment common-styles">
+      :host {
+        padding: 10px;
+        display: block;
+        font-size: var(--body-font-size);
+      }
+
+      .text-center {
+        text-align: center;
+      }
+
+      .event-container {
+        @apply(--layout-horizontal);
+        margin: 15px;
+        transition: opacity 2000ms;
+      }
+
+      .date {
+        padding: 20px;
+        width: 40px;
+      }
+
+      .date .caption {
+        color: var(--secondary-color);
+      }
+
+      .date .title {
+        color: var(--theme-color);
+      }
+
+      .content {
+        padding: 20px;
+        background-color: var(--secondary-color-light);
+        @apply(--layout-flex);
+      }
+
+      .time {
+        color: var(--secondary-color);
+      }
+
+
+      /* Line */
+      .current-line {
+        line-height: 0.625em;
+        border-bottom: 1px solid var(--theme-color);
+        margin: -8px 0 0 65px;
+      }
+
+      .current-line::before {
+        content: '\2022';
+        font-size: 3.1em;
+        margin: -3px 0 0 -10px;
+        vertical-align: middle;
+        display: inline-block;
+        height: 0;
+        color: var(--theme-color);
+      }
+    </style>
+
+    <!-- If no items -->
+    <template is="dom-if" if="{{!_hasEvents}}">
+      <div class="caption text-center">[[ noEventsMessage ]]</div>
+      <span class="caption"></span>
+    </template>
+
+    <!-- Items -->
+    <template is="dom-if" if="{{_hasEvents}}">
+      <!-- Loop through items -->
+      <template is="dom-repeat" items="{{processedEvents}}">
+        <!-- If item -->
+        <template is="dom-if" if="{{!item.isDivider}}">
+          <iron-collapse opened="{{item.opened}}">
+            <div id="{{_computeId(item)}}" class="event-container">
+              <!-- Date -->
+              <div class="date">
+                <div class="caption">[[item.dayText]]</div>
+                <div class="title">[[item.day]]</div>
+                <div class="caption">[[item.monthText]]</div>
+              </div>
+              <div class="content" on-click="eventSelected">
+                <div class="subhead">
+                  <a href$="[[javascriptPlaceholder]]">[[item.title]]</a>
+                </div>
+                <div class="body1">{{item.subtitle}}</div>
+                <div class="body1 time">{{item.timeText}}</div>
+              </div>
+            </div>
+          </iron-collapse>
+        </template>
+
+        <!-- Divider -->
+        <template is="dom-if" if="{{item.isDivider}}">
+          <div class="current-line"></div>
+        </template>
+      </template>
+    </template>
+
+  </template>
+  <script src="uqlibrary-timeline.js"></script>
+</dom-module>
