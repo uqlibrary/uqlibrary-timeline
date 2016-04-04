@@ -1,0 +1,54 @@
+//theme colours
+$theme-color: #49075E;
+$theme-color-dark: #370546;
+$theme-color-lighter: #6B0C8A;
+$theme-color-light: #d2c1d7;
+
+$accent-color: #2377CB;
+$accent-color-light: #288BED;
+$accent-color-lighter: #D9EEFF;
+$accent-color-dark: #005EA5;
+
+$secondary-color: #595959;
+$secondary-color-light: #f2f2f2;
+$secondary-color-dark: #333;
+
+$error-color: #FF3A11;
+
+//special elements colours
+$footer-background-color: #e5e5e5;
+$menu-background-color: #fff;
+
+@mixin flexbox() {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
+@mixin flexboxRow() {
+  @include flexbox();
+
+  -ms-flex-direction: row;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+}
+
+@mixin flexboxColumn() {
+  @include flexbox();
+
+  -ms-flex-direction: column;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+}
+
+@mixin flex($values) {
+  -webkit-box-flex: $values;
+  -moz-box-flex:  $values;
+  -webkit-flex:  $values;
+  -ms-flex:  $values;
+  flex:  $values;
+}
+
+
