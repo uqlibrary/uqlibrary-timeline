@@ -7,25 +7,6 @@ Element providing a simple timeline.
 
     <uqlibrary-timeline></uqlibrary-timeline>
 
-    <script>
-      (function () {
-
-        window.addEventListener('polymer-ready', function() {
-          var timeline = document.querySelector('uqlibrary-timeline');
-          timeline.events = [
-            {
-              id:       1,
-              startDate:new Date(new Date().setHours(0, 0, 0, 0)),
-              endDate:  new Date(new Date().setHours(0, 30, 0, 0)),
-              title:    "Item title 1",
-              subtitle: "Second line"
-            }
-          ];
-        });
-
-      }());
-    </script>
-
 @demo
 
 @demo demo/index.html Demo

@@ -3,3 +3,4 @@
 *.map
 bower_components
 tmp
+.tmp
