@@ -16,9 +16,9 @@ ORG="uqlibrary";
 BRANCH=${1:-"master"}
 
 # Make temporary dir and GIT clone
-rm -rf "../tmp/$REPO";
-mkdir -p "../tmp/$REPO";
-cd "../tmp";
+rm -rf "../.tmp/$REPO";
+mkdir -p "../.tmp/$REPO";
+cd "../.tmp";
 git clone -b $BRANCH https://github.com/$ORG/$REPO.git --single-branch
 
 # Switch to gh-pages branch
@@ -31,7 +31,7 @@ git rm -rf bin
 git rm -rf test
 
 # Bower install
-bower cache clean $REPO # ensure we're getting the latest from the desired branch.
+bower cache clean # ensure we're getting the latest from the desired branch.
 bower install
 
 # Send it all to github
