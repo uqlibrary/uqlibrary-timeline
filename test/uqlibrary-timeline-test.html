@@ -3,7 +3,7 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-  <title>uql-ia-button</title>
+  <title>uql-timeline</title>
 
   <script src="../bower_components/webcomponentsjs/webcomponents.min.js"></script>
   <script src="../bower_components/web-component-tester/browser.js"></script>
@@ -11,72 +11,89 @@
   <link rel="import" href="../bower_components/test-fixture/test-fixture.html">
 
   <!-- Import the element to test -->
-  <link rel="import" href="../elements/uqlibrary-hours.html">
+  <link rel="import" href="../elements/uqlibrary-timeline.html">
 
 </head>
 <body>
 
-<test-fixture id="hours">
+<test-fixture id="basic">
   <template>
-    <uqlibrary-hours auto-load="false"></uqlibrary-hours>
+    <uqlibrary-timeline auto-load="false"></uqlibrary-timeline>
   </template>
 </test-fixture>
 
 <script>
-  var hours = [
+  var data = [
     {
-      "code": "arm",
-      "name": "Architecture / Music Library",
-      "abbr": "Arch Music",
-      "url": "http://www.library.uq.edu.au/locations/architecture-music-library",
-      "open": "09:00:00",
-      "close": "17:00:00",
-      "rev": "0"
+      id:       1,
+      startDate:new Date(new Date().setHours(0, 0, 0, 0)),
+      endDate:  new Date(new Date().setHours(0, 30, 0, 0)),
+      title:    "Item title 1",
+      subtitle: "Second line"
     },
     {
-      "code": "bio",
-      "name": "Biological Sciences Library",
-      "abbr": "Biol Sci",
-      "url": "http://www.library.uq.edu.au/locations/biological-sciences-library",
-      "open": "00:00:00",
-      "close": "24:00:00",
-      "rev": "0",
-      "notes": "Walk in access from 7am to 8pm. Entry after 8pm UQ ID card necessary."
-    }
-  ];
+      id:       2,
+      startDate:new Date(new Date().setHours(15, 0, 0, 0)),
+      endDate:  new Date(new Date().setHours(15, 30, 0, 0)),
+      title:    "Item title 2",
+      subtitle: "Second line"
+    },
+    {
+      id:       3,
+      startDate:new Date(new Date().setHours(26, 0, 0, 0)),
+      endDate:  new Date(new Date().setHours(27, 0, 0, 0)),
+      title:    "A long item title A long item title A long item title A long item title A long item title ",
+      subtitle: "Second line"
+    }];
 
-  suite('<uqlibrary-hours> tests', function () {
+  suite('<uqlibrary-timeline> tests', function () {
     var element;
 
     setup(function () {
-      element = fixture('hours');
+      element = fixture('basic');
+      element.events = data;
     });
 
-    test('It should load data', function (done) {
-      element.addEventListener('uqlibrary-hours-loaded', function () {
-        var _items = element.hours;
-
-        // Check if the List has the right items
-        expect(_items.length).to.be.equal(hours.length);
-        expect(_items[0].name).to.be.equal(hours[0].name);
-
-        // Check opening hours functionality
-        var dayString = moment().format('YYYY-MM-DD');
-        var _open = moment(dayString + ' ' + element.hours[0].open);
-        var _close = moment(dayString + ' ' + element.hours[0].close);
-        var _now = moment();
-        expect(_items[0].times).to.be.equal(_open.format("h:mm a") + ' - ' + _close.format("h:mm a"));
-
-        expect(_items[0].class).to.be.equal(((_open.isBefore(_now) && _close.isAfter(_now)) ? 'open' : 'closed'));
-
-        expect(_items[1].name).to.be.equal(element.hours[1].name);
-        expect(_items[1].times).to.be.equal('open 24 hours');
-
+    test('should have three events in data', function(done) {
+      setTimeout(function() {
+        expect(element.events.length).to.be.equal(3);
         done();
-      });
-
-      element.setHours(hours);
+      }, 500);
     });
+
+    test('should have three events on display', function(done) {
+      setTimeout(function () {
+        var eventsDisplay = document.querySelectorAll('.event-container');
+
+        expect(eventsDisplay.length).to.be.equal(3);
+        done();
+      }, 500);
+    });
+
+    test('should have a divider', function(done) {
+      expect(document.querySelectorAll('.current-line')).to.not.null;
+
+      done();
+    });
+
+    test('should add events to the display', function (done) {
+
+      setTimeout(function () {
+        expect(element.events.length).to.be.equal(4);
+        var eventsDisplay = document.querySelectorAll('.event-container');
+        expect(eventsDisplay.length).to.be.equal(4);
+        done();
+      }, 1000);
+
+      element.push('events', {
+        id:       4,
+        startDate:new Date(new Date().setHours(49, 0, 0, 0)),
+        endDate:  new Date(new Date().setHours(50, 0, 0, 0)),
+        title:    "New Item title",
+        subtitle: "Second line"
+      });
+    })
+
   });
 </script>
 

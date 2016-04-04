@@ -1,7 +1,4 @@
-<link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../iron-collapse/iron-collapse.html">
-
-<script src="../moment/min/moment.min.js"></script>
+<link rel="import" href="elements.html">
 
 <!--
 Element providing a simple timeline.
@@ -35,190 +32,104 @@ Element providing a simple timeline.
 @homepage https://github.com/uqlibrary/uqlibrary-timeline
 -->
 <dom-module id="uqlibrary-timeline">
-  <style>
-      :host,
-      :host *,
-      ::content * {
-        box-sizing: border-box;
-        outline: none; }
-
-      .event-item {
-        transition: opacity 2000ms; }
-
-      .event-item-hidden {
-        opacity: 0; }
-
-      a:focus,
-      .list-item:focus,
-      .line1:focus {
-        text-decoration: underline;
+  <template>
+    <style is="custom-style" include="iron-flex iron-flex-alignment common-styles">
+      :host {
+        padding: 10px;
+        display: block;
+        font-size: var(--body-font-size);
       }
 
+      .text-center {
+        text-align: center;
+      }
+
+      .event-container {
+        @apply(--layout-horizontal);
+        margin: 15px;
+        transition: opacity 2000ms;
+      }
+
+      .date {
+        padding: 20px;
+        width: 40px;
+      }
+
+      .date .caption {
+        color: var(--secondary-color);
+      }
+
+      .date .title {
+        color: var(--theme-color);
+      }
+
+      .content {
+        padding: 20px;
+        background-color: var(--secondary-color-light);
+        @apply(--layout-flex);
+      }
+
+      .time {
+        color: var(--secondary-color);
+      }
+
+
+      /* Line */
+      .current-line {
+        line-height: 0.625em;
+        border-bottom: 1px solid var(--theme-color);
+        margin: -8px 0 0 65px;
+      }
+
+      .current-line::before {
+        content: '\2022';
+        font-size: 3.1em;
+        margin: -3px 0 0 -10px;
+        vertical-align: middle;
+        display: inline-block;
+        height: 0;
+        color: var(--theme-color);
+      }
     </style>
-  <link rel="import" type="css" href="../uqlibrary-elements/resources/theme/element.css">
-  <template>
 
-    <div class="text-container text-center caption" hidden$="{{_computeHidden(processedEvents)}}"> <span>{{ noEventsMessage }}</span> </div>
-    <ul id="timeline" class="three-line-icon-list">
-      <li class="gap"></li>
-      <template is="dom-repeat" items="{{processedEvents}}" as="event" index-as="idx">
-        <template is="dom-if" if="{{!event.isDivider}}">
-          <iron-collapse opened="{{event.opened}}">
+    <!-- If no items -->
+    <template is="dom-if" if="{{!_hasEvents}}">
+      <div class="caption text-center">[[ noEventsMessage ]]</div>
+      <span class="caption"></span>
+    </template>
 
-            <li class="list-item timeline" id="{{_computeId(event)}}">
-
+    <!-- Items -->
+    <template is="dom-if" if="{{_hasEvents}}">
+      <!-- Loop through items -->
+      <template is="dom-repeat" items="{{processedEvents}}">
+        <!-- If item -->
+        <template is="dom-if" if="{{!item.isDivider}}">
+          <iron-collapse opened="{{item.opened}}">
+            <div id="{{_computeId(item)}}" class="event-container">
+              <!-- Date -->
               <div class="date">
-                <div class="caption dayOfWeek">{{event.dayText}}</div>
-                <div class="title dayOfMonth">{{event.day}}</div>
-                <div class="caption month">{{event.monthText}}</div>
+                <div class="caption">[[item.dayText]]</div>
+                <div class="title">[[item.day]]</div>
+                <div class="caption">[[item.monthText]]</div>
               </div>
-              <div class="content" on-click="eventSelected" role="link" data-event-id$="{{event.id}}">
-                <div class="line1">
-                  <a href$="{{javascriptPlaceholder}}">{{event.title}}</a>
+              <div class="content" on-click="eventSelected">
+                <div class="subhead">
+                  <a href$="[[javascriptPlaceholder]]">[[item.title]]</a>
                 </div>
-                <div class="line2">{{event.subtitle}}</div>
-                <div class="line3">{{event.timeText}}</div>
-
+                <div class="body1">{{item.subtitle}}</div>
+                <div class="body1 time">{{item.timeText}}</div>
               </div>
-            </li>
+            </div>
           </iron-collapse>
         </template>
-        <template is="dom-if" if="{{event.isDivider}}">
-          <li class="list-divider timeline">
-            <div class="line"></div>
-          </li>
+
+        <!-- Divider -->
+        <template is="dom-if" if="{{item.isDivider}}">
+          <div class="current-line"></div>
         </template>
       </template>
-    </ul>
+    </template>
+
   </template>
-  <script>
-    (function () {
-      Polymer({
-        is: 'uqlibrary-timeline',
-        properties: {
-          events: {
-            notify: true,
-            observer: 'eventsChanged'
-          },
-          javascriptPlaceholder: {
-            type: String,
-            value: 'javascript:;'
-          },
-          /**
-           * The `events` attribute is an array of events to display on the timeline.
-           *
-           * @property events
-           * @type array
-           */
-          /**
-           * The `noEventsMessage` a message to display when there are no upcoming events
-           *
-           * @property noEventsMessage
-           * @type String
-           */
-          noEventsMessage: {
-            type: String,
-            value: 'Your room or equipment bookings will show up here.',
-            notify: true
-          },
-          processedEvents: { observer: 'processedEventsChanged' }
-        },
-        //disable javascript
-        created: function () {
-          this.events = [];
-          this.processedEvents = [];
-        },
-        /**
-         * The 'event-selected' event is fired when a user taps on an event in timeline,
-         * object containing event details is returned
-         * @event event-selected
-         */
-        eventSelected: function (event, data, source) {
-          var eventId = source.getAttribute('data-event-id');
-          var selectedEvent = this.events.filter(function (event) {
-            return event.id == eventId;
-          });
-          this.fire('event-selected', selectedEvent.length ? selectedEvent[0] : undefined);
-        },
-        processedEventsChanged: function (_, changeValue) {
-          this.async(function () {
-            Array.prototype.slice.call(Polymer.dom(this.$.timeline).querySelectorAll('core-collapse')).forEach(function (element) {
-              if (element.opened === false) {
-                element.opened = true;
-              }
-            });
-          }, null, 100);
-          this.async(function () {
-            Array.prototype.slice.call(Polymer.dom(this.$.timeline).querySelectorAll('.event-item-hidden')).forEach(function (element) {
-              element.className = 'event-item';
-            });
-          }, null, 100);
-        },
-        eventsChanged: function (_, changeValue) {
-          var events = JSON.parse(JSON.stringify(this.events));
-          var processed = [];
-          if (changeValue && changeValue.length) {
-            if (changeValue && changeValue[0].addedCount == 1) {
-              //if one new element is added, set its opened property to false
-              events[changeValue[0].index].opened = false;
-            } else if (changeValue[0] && changeValue[0].removed && changeValue[0].removed.length > 0) {
-            }
-          }
-          //event has been removed from the list
-          // Sort by date (ascending)
-          events.sort(function (a, b) {
-            var aDate = new Date(a.startDate).getTime();
-            var bDate = new Date(b.startDate).getTime();
-            if (aDate > bDate) {
-              return 1;
-            }
-            if (aDate < bDate) {
-              return -1;
-            }
-            return 0;
-          });
-          var haveDivider = false;
-          //build processed events lists for display in timeline
-          for (var i = 0; i < events.length; i++) {
-            events[i].startDate = new Date(events[i].startDate);
-            events[i].endDate = new Date(events[i].endDate);
-            events[i].day = events[i].startDate.getDate();
-            events[i].dayText = moment(events[i].startDate).format('ddd');
-            events[i].monthText = moment(events[i].startDate).format('MMM');
-            var startFormat = moment(events[i].startDate).format('a') == moment(events[i].endDate).format('a') ? 'h:mm' : 'h:mm a';
-            events[i].timeText = moment(events[i].startDate).format(startFormat) + ' - ' + moment(events[i].endDate).format('h:mm a');
-            events[i].class = 'event-item';
-            if (!events[i].hasOwnProperty('opened')) {
-              events[i].opened = true;
-            } else {
-              events[i].class = 'event-item event-item-hidden';
-            }
-            //same day events should not display date
-            if (i > 0 && events[i].startDate.getDay() === events[i - 1].startDate.getDay() && events[i].startDate.getDate() === events[i - 1].startDate.getDate()) {
-              events[i].day = '';
-              events[i].dayText = '';
-              events[i].monthText = '';
-            }
-            //insert divider between past and upcoming
-            if (i > 0 && !haveDivider && new Date().getTime() < events[i].startDate.getTime() && new Date().getTime() >= events[i - 1].startDate.getTime()) {
-              events[i - 1].class = 'last';
-              haveDivider = true;
-              processed.push({ isDivider: true });
-            }
-            processed.push(events[i]);
-          }
-          if (processed.length > 0) {
-            processed[0].class = 'first';
-          }
-          this.processedEvents = processed;
-        },
-        _computeHidden: function (processedEvents) {
-          return processedEvents.length > 0;
-        },
-        _computeId: function (event) {
-          return 'event-' + event.id;
-        }
-      });
-    }());
-  </script>
+  <script src="uqlibrary-timeline.js"></script>
 </dom-module>
