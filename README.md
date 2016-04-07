@@ -1,5 +1,7 @@
-uqlibrary-timeline
-==================
+# uqlibrary-timeline
+
+## Developing
+Clone this element in a subdirect, as the bower_components are installed in the parent directory.
 
 See the [component page](https://uqlibrary.github.io/uqlibrary-timeline) for more information.
 
